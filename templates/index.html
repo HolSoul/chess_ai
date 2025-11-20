@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess AI</title>
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="main-layout">
+        <div class="game-area">
+            <h1>Chess AI</h1>
+
+            <div class="settings" style="margin-bottom: 15px;">
+                <label for="difficulty" style="color: #f0f0f0; font-size: 1.1rem;">Difficulty:</label>
+                <select id="difficulty"
+                    style="padding: 5px; border-radius: 5px; background: #555; color: white; border: none;">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="extreme">Extreme</option>
+                </select>
+            </div>
+
+            <div id="status">White to move</div>
+            <div id="board" style="width: 400px"></div>
+            <div class="controls">
+                <button id="resetBtn">New Game</button>
+                <button id="flipBtn">Flip Board</button>
+            </div>
+        </div>
+
+        <div class="history-area">
+            <h2 style="text-align: center; margin-top: 0;">History</h2>
+            <div id="move-history" class="move-list"></div>
+        </div>
+    </div>
+
+    <!-- jQuery (required for chessboard.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Chessboard.js -->
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <!-- Chess.js (for game logic validation on frontend) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
