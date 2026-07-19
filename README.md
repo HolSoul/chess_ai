@@ -1,105 +1,113 @@
-# ♟️ Chess AI with Deep Learning
+# Chess AI
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-Web%20App-000000?style=for-the-badge&logo=flask&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
+[![Flask](https://img.shields.io/badge/Flask-Web%20App-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-Welcome to my **Chess AI** project! This isn't just another chess engine; it's a neural network-based AI that learns to play by studying human games. 🧠✨
+Сверточная нейросеть (CNN), обученная на **миллионах шахматных позиций**. Веб-интерфейс с тёмной темой, историей ходов, переворотом доски и 4 уровнями сложности.
 
-Built with **PyTorch** for the brain and **Flask** for the beautiful web interface, this project lets you challenge an AI that can be as easy as a toddler or (eventually) as tough as a Grandmaster.
+## Архитектура
 
----
+```mermaid
+flowchart LR
+    A[Board State] --> B[Position Encoding]
+    B --> C[CNN Model]
+    
+    subgraph CNN_Architecture[CNN Architecture]
+        D[Conv Layer 1\n8×8, 256 filters] --> E[BatchNorm + ReLU]
+        E --> F[Conv Layer 2\n8×8, 256 filters]
+        F --> G[BatchNorm + ReLU]
+        G --> H[Conv Layer 3\n8×8, 256 filters]
+        H --> I[BatchNorm + ReLU]
+        I --> J[Flatten]
+        J --> K[Dense 1024]
+        K --> L[Dense 512]
+        L --> M[Output: 4096]
+    end
+    
+    C --> CNN_Architecture
+    M --> N[Move Prediction]
+    N --> O[Top-K Move Selection]
+    O --> P[Play Move]
+```
 
-## 🚀 Features
+## Возможности
 
-*   **🤖 Deep Learning AI**: Uses a Convolutional Neural Network (CNN) trained on millions of positions.
-*   **🎚️ Multiple Difficulties**:
-    *   **Easy**: For casual play (or boosting your ego).
-    *   **Medium**: A decent challenge.
-    *   **Hard**: Sweaty palms territory.
-    *   **Extreme**: Good luck.
-*   **🖥️ Modern Web Interface**:
-    *   Sleek dark mode UI.
-    *   **Move History**: See every move and click to rewind time! ⏳
-    *   **Flip Board**: Want to play Black? Just flip it! The AI automatically takes over White. 🔄
-*   **☁️ Kaggle Training Ready**: Includes a standalone script (`for_kaggle.py`) to train your own models on the cloud for free!
+- **CNN для оценки позиций** — 3-слойная сверточная сеть, обученная на миллионах партий
+- **4 уровня сложности** — Easy / Medium / Hard / Extreme (разные обученные модели)
+- **Тёмная тема** — Современный веб-интерфейс
+- **Переворот доски** — Игра за чёрных с автоматическим AI за белых
+- **Обучение на Kaggle** — Скрипт `for_kaggle.py` для бесплатного облачного обучения
+- **История ходов** — Просмотр всех ходов с возможностью отката
 
----
+## Структура проекта
 
-## 🛠️ Installation
+```
+chess_ai/
+├── app.py                  # Flask веб-приложение
+├── model.py                # CNN архитектура
+├── ai_player.py            # Логика выбора хода AI
+├── train.py                # Локальное обучение
+├── for_kaggle.py           # Скрипт для обучения на Kaggle
+├── data_loader.py          # Загрузчик шахматных данных
+├── chess_model.pth         # Базовая обученная модель
+├── model_easy.pth          # Модель лёгкого уровня
+├── model_medium.pth        # Модель среднего уровня
+├── model_hard.pth          # Модель сложного уровня
+├── static/                 # CSS, JS, ресурсы
+├── templates/              # HTML шаблоны
+├── requirements.txt
+└── README.md
+```
 
-Getting started is super easy. You'll need Python installed.
+## Установка
 
-1.  **Clone the repo** (or download the files):
-    ```bash
-    git clone https://github.com/yourusername/chess-ai.git
-    cd chess-ai
-    ```
+```bash
+git clone https://github.com/HolSoul/chess_ai.git
+cd chess_ai
 
-2.  **Create a virtual environment** (recommended):
-    ```bash
-    python -m venv .venv
-    # Windows
-    .venv\Scripts\activate
-    # Mac/Linux
-    source .venv/bin/activate
-    ```
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+source .venv/bin/activate  # macOS/Linux
 
-3.  **Install dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
+pip install -r requirements.txt
+```
 
----
+## Использование
 
-## 🎮 How to Play
+```bash
+python app.py
+```
 
-1.  **Start the server**:
-    ```bash
-    python app.py
-    ```
-2.  Open your browser and go to:
-    `http://127.0.0.1:5000`
+Откройте [http://127.0.0.1:5000](http://127.0.0.1:5000) в браузере.
 
-3.  **Pick a difficulty** and start moving pieces!
+1. Выберите уровень сложности (Easy / Medium / Hard / Extreme)
+2. Начните игру
+3. Переворот доски для игры за чёрных
+4. История ходов справа
 
-> **Note**: By default, the project comes with a basic `chess_model.pth`. To unlock the true power of Medium/Hard/Extreme modes, you need to train the models (see below).
+### Обучение собственных моделей
 
----
-
-## 🧠 Training Your Own AI
-
-Want to make the AI smarter? You can train it yourself!
-
-### Option A: Train Locally (Slow 🐢)
-Run the training script on your machine:
+**Локально:**
 ```bash
 python train.py
 ```
 
-### Option B: Train on Kaggle (Fast 🐇)
-I've prepared a special script for cloud training.
-1.  Go to [Kaggle](https://www.kaggle.com/).
-2.  Create a New Notebook.
-3.  Copy the content of `for_kaggle.py` into the notebook.
-4.  Upload a PGN dataset (search for "Chess Games" on Kaggle).
-5.  Run the notebook!
-6.  Download the generated `.pth` files (`model_medium.pth`, etc.) and put them in your project folder.
+**На Kaggle (бесплатный GPU):**
+1. Зайдите на [Kaggle](https://www.kaggle.com/)
+2. Создайте New Notebook
+3. Скопируйте содержимое `for_kaggle.py`
+4. Загрузите PGN датасет (поищите "Chess Games" на Kaggle)
+5. Запустите → скачайте `.pth` файлы
 
----
+## Tech Stack
 
-## 🏗️ Tech Stack
+- **Deep Learning**: PyTorch, NumPy
+- **Chess Logic**: python-chess
+- **Web Framework**: Flask
+- **Frontend**: HTML5, CSS3, jQuery, Chessboard.js, Chess.js
 
-*   **Backend**: Python, Flask
-*   **AI/ML**: PyTorch, NumPy
-*   **Chess Logic**: `python-chess`
-*   **Frontend**: HTML5, CSS3, jQuery, Chessboard.js, Chess.js
+## Лицензия
 
----
-
-## 🤝 Contributing
-
-Feel free to fork this project, submit PRs, or open issues if you find bugs (or if the AI plays an illegal move... it happens to the best of us).
-
-Happy Coding & Checkmating! ♔♕
+MIT License
