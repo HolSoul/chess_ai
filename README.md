@@ -10,26 +10,26 @@
 ## Архитектура
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Board State] --> B[Position Encoding]
-    B --> C[CNN Model]
     
-    subgraph CNN_Architecture[CNN Architecture]
-        D[Conv Layer 1\n8×8, 256 filters] --> E[BatchNorm + ReLU]
-        E --> F[Conv Layer 2\n8×8, 256 filters]
-        F --> G[BatchNorm + ReLU]
-        G --> H[Conv Layer 3\n8×8, 256 filters]
-        H --> I[BatchNorm + ReLU]
-        I --> J[Flatten]
-        J --> K[Dense 1024]
-        K --> L[Dense 512]
-        L --> M[Output: 4096]
+    subgraph CNN[CNN Model]
+        direction TB
+        C[Conv: 8×8, 256] --> D[BatchNorm + ReLU]
+        D --> E[Conv: 8×8, 256]
+        E --> F[BatchNorm + ReLU]
+        F --> G[Conv: 8×8, 256]
+        G --> H[BatchNorm + ReLU]
+        H --> I[Flatten]
+        I --> J[Dense 1024]
+        J --> K[Dense 512]
+        K --> L[Output: 4096 moves]
     end
     
-    C --> CNN_Architecture
-    M --> N[Move Prediction]
-    N --> O[Top-K Move Selection]
-    O --> P[Play Move]
+    B --> C
+    L --> M[Move Prediction]
+    M --> N[Top-K Selection]
+    N --> O[Play Move]
 ```
 
 ## Возможности
